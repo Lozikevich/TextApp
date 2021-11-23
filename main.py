@@ -1,5 +1,10 @@
 from datetime import datetime
-from typing import Dict, Iterable
+from typing import Dict
+
+
+# from datetime import date, time
+
+messages_in_chat = {}
 
 
 class Message:
@@ -20,44 +25,43 @@ class Message:
     def message(self) -> str:
         return self.__message
 
-    @message.setter
+    @time.setter
     def time(self, time: str):
         self.__time = time
 
+    @author.setter
     def author(self, author: str):
         self.__author = author
 
+    @message.setter
     def message(self, message: str):
         self.__message = message
-
-
-
-
 
     @staticmethod
     def get_all_messages():
         return messages_in_chat.values()
 
     @staticmethod
-    def add_new_message():
+    def add_new_message(message):
         messages_in_chat[message.time] = message
 
-    def delete_message(self):
-        del messages_in_chat[self.time]
+    @staticmethod
+    def delete_message(message):
+        del messages_in_chat[message]
 
-    def get_message(self) -> str:
-        return self.message
+    @staticmethod
+    def get_message(message):
+        return message
 
+    def __repr__(self) -> str:
+        return f'Message(time={self.time}, author={self.author}, message={self.message})'
 
-messages_in_chat: Dict[id, Message] = {}
 
 if __name__ == '__main__':
-    # Message(1, 'user_1', 'note_1')
-    # Message(2, 'user_2', 'note_2')
-    # print(messages_in_chat)
-    # delete_message.Message(1)
-    # print(messages_in_chat)
+    Message.add_new_message(Message('20', 'user_1', 'note_1'))
+    Message.add_new_message(Message('25', 'user_2', 'note_2'))
+    Message.add_new_message(Message('30', 'user_3', 'note_3'))
+    print(Message.get_all_messages())
 
-    body = Message('20:30', 'user_1', 'note_1')
-    print(body.message)
-    print(get_all_messages())
+    Message.delete_message('20')
+    print(Message.get_all_messages())
