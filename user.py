@@ -9,7 +9,7 @@ class Status:
 
 class User:
     def __init__(self, user_id: int, login: str, password: str, date_of_birth: str, country: str, email: str,
-                 status: int):
+                 status: Status):
         self.__user_id = user_id
         self.__login = login
         self.__password = password
@@ -43,7 +43,7 @@ class User:
         return self.__email
 
     @property
-    def status(self) -> int:
+    def status(self) -> Status:
         return self.__status
 
     @login.setter
@@ -85,6 +85,10 @@ class User:
     @staticmethod
     def get_user(login):
         return login
+
+    @staticmethod
+    def get_status(status):
+        return status
 
     def __repr__(self) -> str:
         return f'User(user_id={self.user_id}, login={self.login}, country={self.country}, email={self.email})'

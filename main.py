@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Dict
 from message import *
 from user import *
 
@@ -17,7 +16,7 @@ if __name__ == '__main__':
     print('---------------')
 
     User.add_new_user(User(0, 'Jonny', '123', '01.01.1991', 'Russian', 'Jonny@mail.ru', 1))
-    User.add_new_user(User(1, 'Jonny_1', '123', '01.01.1991', 'Russian', 'Jonny_1@mail.ru', 1))
+    User.add_new_user(User(1, 'Jonny_1', '123', '01.01.1991', 'Russian', 'Jonny_1@mail.ru', 0))
     User.add_new_user(User(2, 'Jonny_2', '123', '01.01.1991', 'Russian', 'Jonny_2@mail.ru', 1))
 
     print(User.list_of_users())
