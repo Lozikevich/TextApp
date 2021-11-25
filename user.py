@@ -67,7 +67,7 @@ class User:
         self.__email = email
 
     @status.setter
-    def email(self, status: str):
+    def status(self, status: str):
         self.__status = status
 
     @staticmethod
@@ -83,8 +83,8 @@ class User:
         del list_of_users[login]
 
     @staticmethod
-    def get_message(login):
+    def get_user(login):
         return login
 
     def __repr__(self) -> str:
-        return f'User(time={self.user_id}, login={self.login}, country={self.country}, email={self.email})'
+        return f'User(user_id={self.user_id}, login={self.login}, country={self.country}, email={self.email})'
