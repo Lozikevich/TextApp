@@ -1,11 +1,13 @@
 from datetime import datetime
 from message import *
-from user import *
+from MessageManager import *
+from UserManager import *
+
 
 
 
 if __name__ == '__main__':
-    main_storage = MessageStorage('~/data')
+    main_storage = ReadWriteMessageStorage('~/data')
     public_manager = MessageManager('public', main_storage)
     public_manager.add_new_message(Message('25.11.2021 20:05', 'user_1', 'note_1'))
     public_manager.add_new_message(Message('25.11.2021 20:06', 'user_2', 'note_2'))
