@@ -1,4 +1,4 @@
-from MessageStorage import *
+from Message.MessageStorage import *
 
 
 class MessageManager:

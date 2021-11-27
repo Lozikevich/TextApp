@@ -1,4 +1,4 @@
-from message import *
+from Message.message import *
 from typing import Iterable
 
 

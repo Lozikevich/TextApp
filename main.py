@@ -1,10 +1,5 @@
 from datetime import datetime
-from message import *
-from MessageManager import *
-from UserManager import *
-
-
-
+from Message.MessageManager import *
 
 if __name__ == '__main__':
     main_storage = ReadWriteMessageStorage('~/data')
