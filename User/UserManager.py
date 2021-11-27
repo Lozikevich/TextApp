@@ -1,9 +1,8 @@
-from UserStorage import *
+from User.UserStorage import *
 
 
 class UserManager:
-    def __init__(self, name: str, storage: ReadWriteUserStorage):
-        self.__name = name
+    def __init__(self, storage: ReadWriteUserStorage):
         self.__user_storage = storage
 
     @property
