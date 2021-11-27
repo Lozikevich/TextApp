@@ -3,6 +3,8 @@ from Message.MessageManager import *
 
 from User.UserManager import *
 from User.UserStorage import *
+from User.user import *
+
 
 if __name__ == '__main__':
     # main_storage = ReadWriteMessageStorage('~/data')
@@ -28,11 +30,9 @@ if __name__ == '__main__':
     manager.add_new_user(User(1, 'Ivan_1', '123', '02/03/1991', 'Russian', 'Ivan_1@gmail.com'))
     manager.add_new_user(User(2, 'Ivan_2', '123', '02/03/1991', 'Russian', 'Ivan_2@gmail.com'))
     print(manager.get_all_users)
-    print('-----')
-    print(manager.get_one(1))
+    print(len(manager.get_all_users))
+    # user_1 = manager.get_one(2)
+    # print(user_1.email)
 
+    print(manager.get_login(2))
 
-    # print(main_user_storage.login)
-    # print(manager.get_all_users)
-    # print('-------')
-    # print(manager.get_user(1))

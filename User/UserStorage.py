@@ -13,8 +13,13 @@ class ReadOnlyUserStorage(BaseStorage):
         return self._users.values()
 
     def get_one(self, user_id: int) -> User | None:
-        return self._users.get(user_id, None)
+       return self._users.get(user_id, None)
 
+    def get_login(self, user_id):
+        return self.get_one(user_id).login
+
+    def get_email(self, user_id):
+        return self.get_one(user_id).email
 
 class WriteOnlyUserStorage(BaseStorage):
     def put_one(self, user: User):

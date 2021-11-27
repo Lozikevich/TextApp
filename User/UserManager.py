@@ -9,11 +9,21 @@ class UserManager:
     def get_all_users(self):
         return self.__user_storage.get_all()
 
+    def get_one(self, user_id):
+        return self.__user_storage.get_one(user_id)
+
+    def get_login(self, user_id):
+        return self.__user_storage.get_login(user_id)
+
+    def get_email(self, user_id):
+        return self.__user_storage.get_email(user_id)
+
     def add_new_user(self, user):
         self.__user_storage.put_one(user)
 
-    def delete_message(self, user_id):
+    def delete_user(self, user_id):
         self.__user_storage.delete_one(user_id)
 
-    def get_one(self, user_id):
-        return self.__user_storage.get_one(user_id)
+
+
+
