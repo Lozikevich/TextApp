@@ -27,9 +27,11 @@ if __name__ == '__main__':
     manager.add_new_user(User(0, 'Ivan_0', '123', '02/03/1991', 'Russian', 'Ivan_0@gmail.com'))
     manager.add_new_user(User(1, 'Ivan_1', '123', '02/03/1991', 'Russian', 'Ivan_1@gmail.com'))
     manager.add_new_user(User(2, 'Ivan_2', '123', '02/03/1991', 'Russian', 'Ivan_2@gmail.com'))
-
-
     print(manager.get_all_users)
+    print('-----')
+    print(manager.get_one(1))
+
+
     # print(main_user_storage.login)
     # print(manager.get_all_users)
     # print('-------')

@@ -14,3 +14,6 @@ class UserManager:
 
     def delete_message(self, user_id):
         self.__user_storage.delete_one(user_id)
+
+    def get_one(self, user_id):
+        return self.__user_storage.get_one(user_id)
