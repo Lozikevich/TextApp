@@ -21,6 +21,7 @@ class ReadOnlyUserStorage(BaseStorage):
     def get_email(self, user_id):
         return self.get_one(user_id).email
 
+
 class WriteOnlyUserStorage(BaseStorage):
     def put_one(self, user: User):
         self._users[user.user_id] = user

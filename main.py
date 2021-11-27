@@ -26,13 +26,19 @@ if __name__ == '__main__':
 
     main_user_storage = ReadWriteUserStorage('~/data')
     manager = UserManager(main_user_storage)
-    manager.add_new_user(User(0, 'Ivan_0', '123', '02/03/1991', 'Russian', 'Ivan_0@gmail.com'))
-    manager.add_new_user(User(1, 'Ivan_1', '123', '02/03/1991', 'Russian', 'Ivan_1@gmail.com'))
-    manager.add_new_user(User(2, 'Ivan_2', '123', '02/03/1991', 'Russian', 'Ivan_2@gmail.com'))
+    manager.add_new_user(User(0, 'Ivan_0', 'Ivan_0@gmail.com'))
+
+    manager.add_new_user(User(1, 'Ivan_1', 'Ivan_1@gmail.com'))
     print(manager.get_all_users)
-    print(len(manager.get_all_users))
+    manager.add_new_user(User(2, 'Ivan_2', 'Ivan_2@gmail.com'))
+    print(manager.get_all_users)
+    manager.add_new_user(User(3, 'Ivan_2', 'Ivan_3@gmail.com'))
+    print(manager.get_all_users)
+    manager.add_new_user(User(4, 'Ivan_4', 'Ivan_2@gmail.com'))
+    print(manager.get_all_users)
+    manager.add_new_user(User(5, 'Ivan_5', 'Ivan_5@gmail.com'))
+    print(manager.get_all_users)
     # user_1 = manager.get_one(2)
     # print(user_1.email)
-
-    print(manager.get_login(2))
+    # print(manager.get_login(2))
 
