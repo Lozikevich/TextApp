@@ -37,5 +37,6 @@ class UserManager:
         elif user.email in b:
             print('Пользователь с таким email уже существует')
         else:
+            # user.user_id = len(self.get_all_users) + 1
             return self.__user_storage.put_one(user)
 
