@@ -1,5 +1,24 @@
 from Message.message import *
 from typing import Iterable
+from abc import abstractmethod
+
+
+class AbstractMessageStorage(object):
+    @abstractmethod
+    def get_all(self) -> Iterable[Message]:
+        raise NotImplemented
+
+    @abstractmethod
+    def get_one(self, time: str) -> Message | None:
+        raise NotImplemented
+
+    @abstractmethod
+    def put_one(self, message: Message):
+        raise NotImplemented
+
+    @abstractmethod
+    def delete_one(self, time: str):
+        raise NotImplemented
 
 
 class BaseMessageStorage(object):
@@ -24,7 +43,7 @@ class WriteOnlyMessageStorage(BaseMessageStorage):
         del self._messages[time]
 
 
-class ReadWriteMessageStorage(ReadOnlyMessageStorage, WriteOnlyMessageStorage):
+class ReadWriteMessageStorage(ReadOnlyMessageStorage, WriteOnlyMessageStorage, AbstractMessageStorage):
     pass
 
 
