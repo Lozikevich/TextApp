@@ -1,5 +1,5 @@
 from User.UserStorage import *
-from User.UserStorageSQL import *
+from User.SQLUserStorage import *
 # выбрать storage: ReadWriteUserStorage, DatabaseUserStorage
 
 

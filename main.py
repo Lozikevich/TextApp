@@ -1,4 +1,4 @@
-from User.UserStorageSQL import *
+from User.SQLUserStorage import *
 from User.UserManager import *
 
 
