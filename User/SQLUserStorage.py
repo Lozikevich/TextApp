@@ -89,5 +89,3 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
         # обновляем указанную запись из таблицы
         self.__cursor.execute('DELETE FROM users WHERE user_id=:user_id', {'user_id': user_id})
         self.__connection.commit()
-
-
