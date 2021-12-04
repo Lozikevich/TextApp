@@ -103,10 +103,11 @@ class UserManager:
 
     # Присвоение user_id
     def user_id_creator(self) -> int:
-        __a = []
+        a = 0
         for users in self.get_all_users:
-            __a.append(users.user_id)
-        return max(__a) + 1
+            if users.user_id > a:
+                a = users.user_id
+        return a + 1
 
     # Задание пользовател в диалоговом окне
     def user_creator(self) -> User:

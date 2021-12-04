@@ -2,22 +2,16 @@ from dataclasses import dataclass
 from datetime import datetime
 
 
-# @dataclass()
-# class Message:
-#     time: str
-#     login: str
-#     message: str
-
 class Message:
 
-    def __init__(self, time: str, login: str, message: str):
-        self._time = time
+    def __init__(self, mg_time: datetime, login: str, message: str):
+        self._mg_time = mg_time
         self._login = login
         self._message = message
 
     @property
-    def time(self) -> str:
-        return self._time
+    def mg_time(self) -> datetime:
+        return self._mg_time
 
     @property
     def login(self) -> str:
@@ -27,9 +21,9 @@ class Message:
     def message(self) -> str:
         return self._message
 
-    @time.setter
-    def time(self, time: str):
-        self._time = time
+    @mg_time.setter
+    def mg_time(self, mg_time: datetime):
+        self._mg_time = mg_time
 
     @login.setter
     def login(self, login: str):

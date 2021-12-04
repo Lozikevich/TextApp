@@ -10,7 +10,7 @@ class AbstractMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def get_one(self, time: str) -> Message | None:
+    def get_one(self, mg_time: datetime) -> Message | None:
         raise NotImplemented
 
     @abstractmethod
@@ -18,7 +18,7 @@ class AbstractMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def delete_one(self, time: str):
+    def delete_one(self, mg_time: datetime):
         raise NotImplemented
 
 
@@ -32,68 +32,17 @@ class ReadOnlyMessageStorage(BaseMessageStorage):
     def get_all(self) -> Iterable[Message]:
         return self._messages.values()
 
-    def get_one(self, time: str) -> Message | None:
-        return self._messages.get(time, None)
+    def get_one(self, mg_time: datetime) -> Message | None:
+        return self._messages.get(mg_time, None)
 
 
 class WriteOnlyMessageStorage(BaseMessageStorage):
     def put_one(self, message: Message):
-        self._messages[message.time] = message
+        self._messages[message.mg_time] = message
 
-    def delete_one(self, time: str):
-        del self._messages[time]
+    def delete_one(self, mg_time: datetime):
+        del self._messages[mg_time]
 
 
 class ReadWriteMessageStorage(ReadOnlyMessageStorage, WriteOnlyMessageStorage, AbstractMessageStorage):
     pass
-
-# Определяем класс для файлового хранилища сообщений
-
-
-class FileMessageStorage(AbstractMessageStorage):
-    def __init__(self, file: Path):
-        self._path = file
-
-        if not self._path.exists:
-            self._path.open('w')
-
-    def get_all(self) -> Iterable[Message]:
-        try:
-            with self._path.open('r') as f:
-                for line in f.readlines():
-                    values = line.split('][')
-                    yield Message(values[0], values[1], values[2].removesuffix('\n'))
-
-        except FileNotFoundError:
-            pass
-
-    # def put_one(self, note: Note):
-    #     # читаем заметки, фильтруем, перезаписываем с новыми данными
-    #     lines = [self.__make_line(x) for x in self.get_all() if x.id != note.id] + [self.__make_line(note)]
-    #     self.__path.write_text('\n'.join(lines))
-
-    # def __make_line(self, note: Note) -> str:
-    #     return self.__delimiter.join([str(note.id), note.author, note.message])
-    #
-    # def __make_note(self, line: str):
-    #     note_id, author, message = line.split(self.__delimiter)
-    #     return Note(int(note_id), author, message)
-
-    def get_one(self, time: str) -> Message | None:
-        for message in self.get_all():
-            if message.time == time:
-                return message
-
-    def put_one(self, message: Message):
-        lines = []
-        with self._path.open('r') as f:
-            lines.extend(f.readlines())
-        lines.append(f'{message.time}][{message.login}][{message.message}\n')
-        with self._path.open('w') as f:
-            f.writelines(lines)
-
-    # lines = [self.__make_line(x) for x in self.get_all() if x.id != note.id] + [self.__make_line(note)]
-    # self.__path.write_text('\n'.join(lines))
-
-    def delete_one(self, time: str):
-        raise NotImplemented
