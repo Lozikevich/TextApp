@@ -1,8 +1,36 @@
-from Message.MessageStorage import *
 from Message.message import *
+from abc import abstractmethod
+from pathlib import Path
+from typing import Iterable
 
 
-class FileMessageStorage(AbstractMessageStorage):
+class AbstractFileMessageStorage(object):
+    @abstractmethod
+    def get_all(self) -> Iterable[Message]:
+        raise NotImplemented
+
+    @abstractmethod
+    def get_one(self, mg_time: datetime) -> Message | None:
+        raise NotImplemented
+
+    @abstractmethod
+    def put_one(self, message: Message):
+        raise NotImplemented
+
+    @abstractmethod
+    def delete_one(self, mg_time: datetime):
+        raise NotImplemented
+
+    @abstractmethod
+    def message_maker(self, line: str) -> Message:
+        raise NotImplemented
+
+    @abstractmethod
+    def _make_line(self, message: Message) -> str:
+        raise NotImplemented
+
+
+class FileMessageStorage(AbstractFileMessageStorage):
     def __init__(self, file: Path, delimiter=']['):
         self._path = file
         self._delimiter = delimiter
@@ -23,10 +51,9 @@ class FileMessageStorage(AbstractMessageStorage):
 
 #   Преобразует строку из файла в объект Message
     def message_maker(self, line: str) -> Message:
-        datetime_formatter: str = "%Y-%m-%d %H:%M:%S.%f"
-        __mg_time_str, login, message = line.split('][')
-        __mg_time = datetime.strptime(__mg_time_str, datetime_formatter)
-        return Message(__mg_time, login, message)
+        mg_time_str, login, message = line.split('][')
+        mg_time = datetime.strptime(mg_time_str, "%Y-%m-%d %H:%M:%S.%f")
+        return Message(mg_time, login, message)
 
 #   Преобразует Message в строку
     def _make_line(self, message: Message) -> str:
@@ -42,4 +69,8 @@ class FileMessageStorage(AbstractMessageStorage):
         lines = [self._make_line(message) for message in self.get_all() if message.mg_time != mg_time]
         self._path.write_text('\n'.join(lines))
 
+    def get_one(self, mg_time: str) -> Message | None:
+        for message in self.get_all():
+            if str(message.mg_time) == mg_time:
+                return message
 

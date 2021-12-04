@@ -28,35 +28,23 @@ if __name__ == '__main__':
     # # manager.add_new_user(manager.user_creator())
     # # print(manager.get_all_users)
     # print(datetime.now())
-    data = str(datetime.now())
-    data_formatter = "%Y-%m-%d %H:%M:%S.%f"
-    print(datetime.strptime(str(datetime.now()), data_formatter))
-    # print(datetime.strptime(data, data_formatter))
+    # data = str(datetime.now())
+    # data_formatter = "%Y-%m-%d %H:%M:%S.%f"
+    # print(datetime.strptime(str(datetime.now()), data_formatter))
+    # # print(datetime.strptime(data, data_formatter))
 
     # print(manager.check_login_authorization('Ivan_3'))
     # manager.delete_user(6)
     # print(manager.get_all_users)
     # print(manager.user_id_creator())
     # print(manager.user_id_creator())
-
-
-
-    # main_message_storage = FileMessageStorage(Path('MessageStorage.txt'))
-    # manager = MessageManager('Public', main_message_storage)
-    #
-    # manager.add_new_message(Message('20:05', 'I_0', '0'))
-    #
-    # manager.add_new_message(Message('20:06', 'I_1', '1'))
-    #
-    # manager.add_new_message(Message('20:07', 'I_2', '2'))
-    #
-    # print([message for message in manager.get_all_messages()])
-    # print(manager.get_one_message('20:06'))
-
-    # print('')
-    # manager.add_new_message(Message(datetime.now(), 'Ivan_0', '123'))
-    # print('')
-    # manager.add_new_message(Message(datetime.now(), 'Ivan_1', '123'))
-    # print('')
-    # manager.add_new_message(Message(datetime.now(), 'Ivan_0', '123'))
-
+    main_message_storage = FileMessageStorage(Path('MessageStorage.txt'))
+    manager = MessageManager('Public', main_message_storage)
+    # manager.add_new_message(Message(datetime.now(), 'I_0', '0'))
+    # print(manager.get_all_messages())
+    # manager.add_new_message(Message(datetime.now(), 'I_1', '1'))
+    # print(manager.get_all_messages())
+    # manager.add_new_message(Message(datetime.now(), 'I_2', '2'))
+    # print(manager.get_all_messages())
+    print(manager.get_one_message('2021-12-04 17:28:51.828210'))
+    # print(datetime.strptime('2021-12-04 17:28:51.100000', "%Y-%m-%d %H:%M:%S.%f"))

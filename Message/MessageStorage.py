@@ -1,7 +1,6 @@
 from Message.message import *
 from typing import Iterable
 from abc import abstractmethod
-from pathlib import Path
 
 
 class AbstractMessageStorage(object):
@@ -32,7 +31,8 @@ class ReadOnlyMessageStorage(BaseMessageStorage):
     def get_all(self) -> Iterable[Message]:
         return self._messages.values()
 
-    def get_one(self, mg_time: datetime) -> Message | None:
+    def get_one(self, mg_time: str) -> Message | None:
+        # mg_time = datetime.strptime(mg_time, "%Y-%m-%d %H:%M:%S.%f")
         return self._messages.get(mg_time, None)
 
 

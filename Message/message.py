@@ -34,4 +34,4 @@ class Message:
         self._message = message
 
     def __repr__(self):
-        return f'User(time={self._time}, login={self._login}, message={self._message})'
+        return f'Message(time={self._mg_time}, login={self._login}, message={self._message})'
