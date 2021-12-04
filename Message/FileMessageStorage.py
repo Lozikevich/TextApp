@@ -69,8 +69,8 @@ class FileMessageStorage(AbstractFileMessageStorage):
         lines = [self._make_line(message) for message in self.get_all() if message.mg_time != mg_time]
         self._path.write_text('\n'.join(lines))
 
+#   Находит message по mg_time
     def get_one(self, mg_time: str) -> Message | None:
         for message in self.get_all():
             if str(message.mg_time) == mg_time:
                 return message
-

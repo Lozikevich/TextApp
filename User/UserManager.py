@@ -1,10 +1,10 @@
-from distutils.command.install import value
-
 from User.UserStorage import *
+from User.UserStorageSQL import *
+# выбрать storage: ReadWriteUserStorage, DatabaseUserStorage
 
 
 class UserManager:
-    def __init__(self, storage: ReadWriteUserStorage):
+    def __init__(self, storage: DatabaseUserStorage):
         self.__user_storage = storage
 
     @property
@@ -13,9 +13,6 @@ class UserManager:
 
     def get_one(self, user_id: int) -> User:
         return self.__user_storage.get_one(user_id)
-
-    def get_user_id(self) -> int:
-        return self.__user_storage.get_user_id
 
     # Достает параметры по user_id
     def get_login(self, user_id: int) -> str:

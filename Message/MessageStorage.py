@@ -32,7 +32,6 @@ class ReadOnlyMessageStorage(BaseMessageStorage):
         return self._messages.values()
 
     def get_one(self, mg_time: str) -> Message | None:
-        # mg_time = datetime.strptime(mg_time, "%Y-%m-%d %H:%M:%S.%f")
         return self._messages.get(mg_time, None)
 
 
