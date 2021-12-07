@@ -11,7 +11,7 @@ class AbstractDatabaseMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def get_one(self, mg_time: datetime) -> Message | None:
+    def get_one(self, mg_time: str) -> Message | None:
         raise NotImplemented
 
     @abstractmethod
@@ -19,7 +19,7 @@ class AbstractDatabaseMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def delete_one(self, mg_time: datetime):
+    def delete_one(self, mg_time: str):
         raise NotImplemented
 
 
@@ -62,3 +62,5 @@ class DatabaseMessageStorage(AbstractDatabaseMessageStorage):
         # обновляем указанную запись из таблицы
         self.__cursor.execute('DELETE FROM users WHERE mg_time=:mg_time', {'mg_time': mg_time})
         self.__connection.commit()
+
+

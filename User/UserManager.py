@@ -11,18 +11,18 @@ class UserManager:
     def get_all_users(self) -> Iterable[User]:
         return self.__user_storage.get_all()
 
-    def get_one(self, user_id: int) -> User:
-        return self.__user_storage.get_one(user_id)
+    def get_one(self, telephone_number: int) -> User:
+        return self.__user_storage.get_one(telephone_number)
 
     # Достает параметры по user_id
-    def get_login(self, user_id: int) -> str:
-        return self.__user_storage.get_login(user_id)
+    def get_login(self, telephone_number: int) -> str:
+        return self.__user_storage.get_login(telephone_number)
 
-    def get_email(self, user_id: int) -> str:
-        return self.__user_storage.get_email(user_id)
+    def get_email(self, telephone_number: int) -> str:
+        return self.__user_storage.get_email(telephone_number)
 
-    def get_password(self, user_id: int) -> str:
-        return self.__user_storage.get_password(user_id)
+    def get_password(self, telephone_number: int) -> str:
+        return self.__user_storage.get_password(telephone_number)
 
     # Достает параметры по login
     def get_password_by_login(self, login: str):
@@ -77,11 +77,11 @@ class UserManager:
         else:
             return False
 
-    # Проверка наличия пользователя по user_id
-    def check_user_id(self, user_id) -> bool:
+    # Проверка наличия пользователя по telephone_number
+    def check_user_id(self, telephone_number) -> bool:
         for users in self.get_all_users:
             _a = 0
-            if user_id == users.user_id:
+            if telephone_number == users.telephone_number:
                 _a = 1
             else:
                 continue
@@ -91,29 +91,29 @@ class UserManager:
                 print('Пользователь с таким user_id не зарегистрирован в системе')
                 return False
 
-    # Удаление пользователя по user_id
-    def delete_user(self, user_id):
-        if not self.check_user_id(user_id):
+    # Удаление пользователя по telephone_number
+    def delete_user(self, telephone_number):
+        if not self.check_user_id(telephone_number):
             print('Пользователь с таким user_id не найден')
         else:
-            return self.__user_storage.delete_one(user_id)
+            return self.__user_storage.delete_one(telephone_number)
 
-    # Присвоение user_id
-    def user_id_creator(self) -> int:
-        a = 0
-        for users in self.get_all_users:
-            if users.user_id > a:
-                a = users.user_id
-        return a + 1
+    # # Присвоение user_id
+    # def user_id_creator(self) -> int:
+    #     a = 0
+    #     for users in self.get_all_users:
+    #         if users.user_id > a:
+    #             a = users.user_id
+    #     return a + 1
 
     # Задание пользовател в диалоговом окне
     def user_creator(self) -> User:
-        print("Введите Ваш логин, пароль, электронную почту в строку через ' ;; ': ")
+        print("Введите Ваш номер телефона, логин, пароль, электронную почту в строку через ' ;; ': ")
         a = input()
         user = []
         for i in a:
             values = a.split(' ;; ')
-            user = User(int(self.user_id_creator()), values[0], values[1], values[2])
+            user = User(int(values[0]), values[1], values[2], values[3])
         return user
 
     # Добавление нового пользователя

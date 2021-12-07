@@ -29,7 +29,7 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
         self.__cursor = self.__connection.cursor()
         # создаём таблицу "users", если таковой ещё нет
         self.__cursor.execute(
-            'CREATE TABLE IF NOT EXISTS users (user_id int PRIMARY KEY, login text, password text, email text)'
+            'CREATE TABLE IF NOT EXISTS users (telephone_number int PRIMARY KEY, login text, password text, email text)'
         )
 
     # Делает User из строки db
@@ -41,9 +41,10 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
     def get_all(self) -> Iterable[User]:
         yield from (self.__make_user(row) for row in self.__cursor.execute('SELECT * FROM users'))
 
-    def get_one(self, user_id) -> User | None:
+    def get_one(self, telephone_number) -> User | None:
         # запрашиваем нужную запись по user_id
-        rows = self.__cursor.execute('SELECT * FROM users WHERE user_id=:user_id', {'user_id': user_id})
+        rows = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
+                                     {'telephone_number': telephone_number})
         # формируем user из первого (и единственного, вероятного) элемента rows, если таковой имеется
         try:
             return self.__make_user(next(rows))
@@ -51,18 +52,21 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
             return None
 
     # Выдает параметры по user_id
-    def get_login(self, user_id):
-        row = self.__cursor.execute('SELECT * FROM users WHERE user_id=:user_id', {'user_id': user_id})
+    def get_login(self, telephone_number):
+        row = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
+                                    {'telephone_number': telephone_number})
         user = self.__make_user(next(row))
         return user.login
 
-    def get_password(self, user_id):
-        row = self.__cursor.execute('SELECT * FROM users WHERE user_id=:user_id', {'user_id': user_id})
+    def get_password(self, telephone_number):
+        row = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
+                                    {'telephone_number': telephone_number})
         user = self.__make_user(next(row))
         return user.password
 
-    def get_email(self, user_id):
-        row = self.__cursor.execute('SELECT * FROM users WHERE user_id=:user_id', {'user_id': user_id})
+    def get_email(self, telephone_number):
+        row = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
+                                    {'telephone_number': telephone_number})
         user = self.__make_user(next(row))
         return user.email
 
@@ -75,17 +79,19 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
     def get_user_id_by_login(self, login) -> int:
         row = self.__cursor.execute('SELECT * FROM users WHERE login=:login', {'login': login})
         user = self.__make_user(next(row))
-        return user.user_id
+        return user.telephone_number
 
     def put_one(self, user: User):
         # обновляем существующую запись в таблице или вставляем новую
         self.__cursor.execute(
             'INSERT INTO users VALUES (:user_id, :login, :password, :email) '
-            '  ON CONFLICT (user_id) DO UPDATE SET user_id=:user_id, login=:login, password=:password, email=:email',
-            (user.user_id, user.login, user.password, user.email))
+            '  ON CONFLICT (user_id) DO UPDATE SET telephone_number=:telephone_number, login=:login, '
+            'password=:password, email=:email',
+            (user.telephone_number, user.login, user.password, user.email))
         self.__connection.commit()
 
-    def delete_one(self, user_id: int):
+    def delete_one(self, telephone_number: int):
         # обновляем указанную запись из таблицы
-        self.__cursor.execute('DELETE FROM users WHERE user_id=:user_id', {'user_id': user_id})
+        self.__cursor.execute('DELETE FROM users WHERE telephone_number=:telephone_number',
+                              {'telephone_number': telephone_number})
         self.__connection.commit()

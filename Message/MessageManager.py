@@ -1,13 +1,15 @@
 from Message.MessageStorage import *
 from Message.FileMessageStorage import *
 from Message.MessageStorage import *
+from Message.SQLMessageStorage import *
 
 a = FileMessageStorage
 b = ReadWriteMessageStorage
+c = DatabaseMessageStorage
 
 
 class MessageManager:
-    def __init__(self, name: str, storage: a):
+    def __init__(self, name: str, storage: c):
         self.__name = name
         self.__storage = storage
 
@@ -22,5 +24,5 @@ class MessageManager:
         self.__storage.put_one(message)
 
     def delete_message(self, mg_time: str):
-        mg_time = datetime.strptime(mg_time, "%Y-%m-%d %H:%M:%S.%f")
+        # mg_time = datetime.strptime(mg_time, "%Y-%m-%d %H:%M:%S.%f")
         self.__storage.delete_one(mg_time)
