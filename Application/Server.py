@@ -84,7 +84,7 @@ if __name__ == '__main__':
         i = 0
         for user in manager.get_all_users:
             i = i + 1
-            response = {str(i): user}
+            response = response + {str(i): user}
         return response
 
     app.run()
