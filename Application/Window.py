@@ -1,7 +1,7 @@
 from PySide6.QtCore import Slot, QRect
 
 from PySide6.QtSql import QSqlDatabase, QSqlTableModel
-
+from typing import Iterable
 from PySide6.QtWidgets import (
     QLabel, QWidget, QPushButton, QLineEdit,
 )
@@ -43,6 +43,7 @@ class Window(QWidget):
             self.__model.setData(self.__model.index(row, 2), dialog.entry.password)
             self.__model.setData(self.__model.index(row, 3), dialog.entry.email)
             self.__model.submitAll()
+
 
 
 

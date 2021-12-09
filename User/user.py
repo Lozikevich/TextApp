@@ -4,14 +4,14 @@ from datetime import date
 
 class User:
 
-    def __init__(self, telephone_number: int, login: str, password: str, email: str):
+    def __init__(self, telephone_number: str, login: str, password: str, email: str):
         self._telephone_number = telephone_number
         self._login = login
         self._password = password
         self._email = email
 
     @property
-    def telephone_number(self) -> int:
+    def telephone_number(self) -> str:
         return self._telephone_number
 
     @property
@@ -27,7 +27,7 @@ class User:
         return self._email
 
     @telephone_number.setter
-    def telephone_number(self, telephone_number: int):
+    def telephone_number(self, telephone_number: str):
         self._telephone_number = telephone_number
 
     @login.setter

@@ -9,8 +9,8 @@ c = DatabaseMessageStorage
 
 
 class MessageManager:
-    def __init__(self, name: str, storage: c):
-        self.__name = name
+    def __init__(self, storage: c):
+        # self.__name = name
         self.__storage = storage
 
     @property

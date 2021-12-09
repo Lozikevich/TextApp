@@ -11,7 +11,7 @@ class AbstractDatabaseUserStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def get_one(self, user_id) -> User | None:
+    def get_one(self, telephone_number) -> User | None:
         raise NotImplemented
 
     @abstractmethod
@@ -19,7 +19,7 @@ class AbstractDatabaseUserStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def delete_one(self, note_id: int):
+    def delete_one(self, telephone_number: str):
         raise NotImplemented
 
 
@@ -29,12 +29,13 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
         self.__cursor = self.__connection.cursor()
         # создаём таблицу "users", если таковой ещё нет
         self.__cursor.execute(
-            'CREATE TABLE IF NOT EXISTS users (telephone_number int PRIMARY KEY, login text, password text, email text)'
+            'CREATE TABLE IF NOT EXISTS users (telephone_number text PRIMARY KEY, login text, password text, '
+            'email text)'
         )
 
     # Делает User из строки db
     @staticmethod
-    def __make_user(row: Tuple[int, str, str, str]) -> User:
+    def __make_user(row: Tuple[str, str, str, str]) -> User:
         return User(row[0], row[1], row[2], row[3])
 
     # Выгружает все строки из db и импотритует в User
@@ -76,7 +77,7 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
         user = self.__make_user(next(row))
         return user.password
 
-    def get_user_id_by_login(self, login) -> int:
+    def get_user_id_by_login(self, login) -> str:
         row = self.__cursor.execute('SELECT * FROM users WHERE login=:login', {'login': login})
         user = self.__make_user(next(row))
         return user.telephone_number
@@ -84,13 +85,13 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
     def put_one(self, user: User):
         # обновляем существующую запись в таблице или вставляем новую
         self.__cursor.execute(
-            'INSERT INTO users VALUES (:user_id, :login, :password, :email) '
-            '  ON CONFLICT (user_id) DO UPDATE SET telephone_number=:telephone_number, login=:login, '
+            'INSERT INTO users VALUES (:telephone_number, :login, :password, :email) '
+            '  ON CONFLICT (telephone_number) DO UPDATE SET telephone_number=:telephone_number, login=:login, '
             'password=:password, email=:email',
             (user.telephone_number, user.login, user.password, user.email))
         self.__connection.commit()
 
-    def delete_one(self, telephone_number: int):
+    def delete_one(self, telephone_number: str):
         # обновляем указанную запись из таблицы
         self.__cursor.execute('DELETE FROM users WHERE telephone_number=:telephone_number',
                               {'telephone_number': telephone_number})

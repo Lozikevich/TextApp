@@ -9,7 +9,7 @@ class AbstractMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def get_one(self, mg_time: datetime) -> Message | None:
+    def get_one(self, mg_time: str) -> Message | None:
         raise NotImplemented
 
     @abstractmethod
@@ -17,7 +17,7 @@ class AbstractMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def delete_one(self, mg_time: datetime):
+    def delete_one(self, mg_time: str):
         raise NotImplemented
 
 

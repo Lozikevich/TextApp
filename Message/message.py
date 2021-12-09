@@ -4,13 +4,14 @@ from datetime import datetime
 
 class Message:
 
-    def __init__(self, mg_time: datetime, login: str, message: str):
+    def __init__(self, mg_time: str, login: str, to_login: str, txt: str):
         self._mg_time = mg_time
         self._login = login
-        self._message = message
+        self._to_login = to_login
+        self._txt = txt
 
     @property
-    def mg_time(self) -> datetime:
+    def mg_time(self) -> str:
         return self._mg_time
 
     @property
@@ -18,8 +19,12 @@ class Message:
         return self._login
 
     @property
-    def message(self) -> str:
-        return self._message
+    def to_login(self) -> str:
+        return self._to_login
+
+    @property
+    def txt(self) -> str:
+        return self._txt
 
     @mg_time.setter
     def mg_time(self, mg_time: datetime):
@@ -29,9 +34,13 @@ class Message:
     def login(self, login: str):
         self._login = login
 
-    @message.setter
-    def message(self, message: str):
-        self._message = message
+    @to_login.setter
+    def to_login(self, to_login: str):
+        self._to_login = to_login
+
+    @txt.setter
+    def txt(self, txt: str):
+        self._txt = txt
 
     def __repr__(self):
-        return f'Message(time={self._mg_time}, login={self._login}, message={self._message})'
+        return f'Message(time={self._mg_time}, login={self._login}, txt={self._txt})'
