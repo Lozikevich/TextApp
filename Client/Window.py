@@ -1,12 +1,9 @@
 from PySide6.QtCore import Slot, QRect
 
-from PySide6.QtSql import QSqlDatabase, QSqlTableModel
-from typing import Iterable
 from PySide6.QtWidgets import (
-    QLabel, QWidget, QPushButton, QLineEdit,
-)
+    QWidget, QPushButton, )
 
-from RegistrationDialog import *
+from Client.RegistrationDialog import *
 
 
 class Window(QWidget):
