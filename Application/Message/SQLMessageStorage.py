@@ -1,9 +1,9 @@
 import sqlite3
 from typing import Iterable, Tuple
 from pathlib import Path
-from Message.message import *
+from Application.Message.message import *
 from abc import abstractmethod
-from Message.MessageStorage import *
+from Application.Message.MessageStorage import *
 
 
 class DatabaseMessageStorage(AbstractMessageStorage):
@@ -45,5 +45,3 @@ class DatabaseMessageStorage(AbstractMessageStorage):
         # обновляем указанную запись из таблицы
         self.__cursor.execute('DELETE FROM messages WHERE mg_time=:mg_time', {'mg_time': mg_time})
         self.__connection.commit()
-
-

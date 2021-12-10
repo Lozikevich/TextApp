@@ -1,7 +1,3 @@
-from User.SQLUserStorage import *
-from User.UserManager import *
-from Message.MessageManager import *
-from Message.SQLMessageStorage import *
 import requests
 import json
 
@@ -13,14 +9,16 @@ if __name__ == '__main__':
     # manager.add_new_user(User('2', 'Ivan_2', '123', 'Ivan_2@gmail.com'))
     # manager.add_new_user(User('3', 'Ivan_3', '123', 'Ivan_3@gmail.com'))
     # manager.add_new_user(User('4', 'Ivan_4', '123', 'Ivan_4@gmail.com'))
-    # manager.add_new_user(User('5', 'Ivan_5', '123', 'Ivan_5@gmail.com'))
+    # # manager.add_new_user(User('5', 'Ivan_5', '123', 'Ivan_5@gmail.com'))
     # print([user for user in manager.get_all_users])
 
-    response = requests.get('http://127.0.0.1:5000/users')
-    # users = response.json()['users']
-    users = json.load(response.json())
-
-
+    # response = requests.get('http://127.0.0.1:5000/friends', params={'t_num': '6'})
+    # print(response.json())
+    new_user = {'t_num': '6', 'login': 'Ivan_6', 'password': '123', 'email': 'Ivan_6@gmail.com'}
+    response = requests.post('http://127.0.0.1:5000/add_user', json=new_user)
+    response_1 = requests.get('http://127.0.0.1:5000/users')
+    for user in response_1:
+        print(user)
 
     # main_user_storage = DatabaseMessagetorage(Path('storage.db'))
     # manager = UserManager(main_user_storage)
@@ -65,4 +63,3 @@ if __name__ == '__main__':
     # print(manager.get_all_messages())
     # # print(manager.get_one_message('2021-12-04 17:28:51.828210'))
     # # print(datetime.strptime('2021-12-04 17:28:51.100000', "%Y-%m-%d %H:%M:%S.%f"))
-

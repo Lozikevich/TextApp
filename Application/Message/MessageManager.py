@@ -1,16 +1,11 @@
-from Message.MessageStorage import *
-from Message.FileMessageStorage import *
-from Message.MessageStorage import *
-from Message.SQLMessageStorage import *
-
-a = FileMessageStorage
-b = ReadWriteMessageStorage
-c = DatabaseMessageStorage
+from Application.Message.MessageStorage import *
+from Application.Message.FileMessageStorage import *
+from Application.Message.MessageStorage import *
+from Application.Message.SQLMessageStorage import *
 
 
 class MessageManager:
-    def __init__(self, storage: c):
-        # self.__name = name
+    def __init__(self, storage):
         self.__storage = storage
 
     @property

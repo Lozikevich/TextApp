@@ -1,6 +1,6 @@
-from User.user import *
 from typing import Iterable
 from abc import abstractmethod
+from Application.User.user import *
 
 
 class AbstractUserStorage(object):

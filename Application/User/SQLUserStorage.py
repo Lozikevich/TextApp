@@ -1,8 +1,8 @@
 import sqlite3
 from typing import Iterable, Tuple
 from pathlib import Path
-from User.user import *
 from abc import abstractmethod
+from Application.User.user import *
 
 
 class AbstractDatabaseUserStorage(object):
@@ -11,7 +11,7 @@ class AbstractDatabaseUserStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def get_one(self, telephone_number) -> User | None:
+    def get_one(self, t_num) -> User | None:
         raise NotImplemented
 
     @abstractmethod
@@ -19,7 +19,7 @@ class AbstractDatabaseUserStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def delete_one(self, telephone_number: str):
+    def delete_one(self, t_num: str):
         raise NotImplemented
 
 
@@ -29,7 +29,7 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
         self.__cursor = self.__connection.cursor()
         # создаём таблицу "users", если таковой ещё нет
         self.__cursor.execute(
-            'CREATE TABLE IF NOT EXISTS users (telephone_number text PRIMARY KEY, login text, password text, '
+            'CREATE TABLE IF NOT EXISTS users (t_num text PRIMARY KEY, login text, password text, '
             'email text)'
         )
 
@@ -38,14 +38,19 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
     def __make_user(row: Tuple[str, str, str, str]) -> User:
         return User(row[0], row[1], row[2], row[3])
 
+    @staticmethod
+    def __make_dict_user(row: Tuple[str, str, str, str]) -> Dict:
+        return {'t_num': row[0], 'login': row[1], 'password': row[2], 'email': row[3]}
+
     # Выгружает все строки из db и импотритует в User
     def get_all(self) -> Iterable[User]:
         yield from (self.__make_user(row) for row in self.__cursor.execute('SELECT * FROM users'))
+        # yield from (self.__make_dict_user(row) for row in self.__cursor.execute('SELECT * FROM users'))
 
-    def get_one(self, telephone_number) -> User | None:
-        # запрашиваем нужную запись по user_id
-        rows = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
-                                     {'telephone_number': telephone_number})
+    def get_one(self, t_num) -> User | None:
+        # запрашиваем нужную запись по t_num
+        rows = self.__cursor.execute('SELECT * FROM users WHERE t_num=:t_num',
+                                     {'t_num': t_num})
         # формируем user из первого (и единственного, вероятного) элемента rows, если таковой имеется
         try:
             return self.__make_user(next(rows))
@@ -53,21 +58,21 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
             return None
 
     # Выдает параметры по user_id
-    def get_login(self, telephone_number):
-        row = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
-                                    {'telephone_number': telephone_number})
+    def get_login(self, t_num):
+        row = self.__cursor.execute('SELECT * FROM users WHERE t_num=:t_num',
+                                    {'t_num': t_num})
         user = self.__make_user(next(row))
         return user.login
 
-    def get_password(self, telephone_number):
-        row = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
-                                    {'telephone_number': telephone_number})
+    def get_password(self, t_num):
+        row = self.__cursor.execute('SELECT * FROM users WHERE t_num=:t_num',
+                                    {'t_num': t_num})
         user = self.__make_user(next(row))
         return user.password
 
-    def get_email(self, telephone_number):
-        row = self.__cursor.execute('SELECT * FROM users WHERE telephone_number=:telephone_number',
-                                    {'telephone_number': telephone_number})
+    def get_email(self, t_num):
+        row = self.__cursor.execute('SELECT * FROM users WHERE t_num=:t_num',
+                                    {'t_num': t_num})
         user = self.__make_user(next(row))
         return user.email
 
@@ -80,19 +85,19 @@ class DatabaseUserStorage(AbstractDatabaseUserStorage):
     def get_user_id_by_login(self, login) -> str:
         row = self.__cursor.execute('SELECT * FROM users WHERE login=:login', {'login': login})
         user = self.__make_user(next(row))
-        return user.telephone_number
+        return user.t_num
 
     def put_one(self, user: User):
         # обновляем существующую запись в таблице или вставляем новую
         self.__cursor.execute(
-            'INSERT INTO users VALUES (:telephone_number, :login, :password, :email) '
-            '  ON CONFLICT (telephone_number) DO UPDATE SET telephone_number=:telephone_number, login=:login, '
+            'INSERT INTO users VALUES (:t_num, :login, :password, :email) '
+            '  ON CONFLICT (t_num) DO UPDATE SET t_num=:t_num, login=:login, '
             'password=:password, email=:email',
-            (user.telephone_number, user.login, user.password, user.email))
+            (user.t_num, user.login, user.password, user.email))
         self.__connection.commit()
 
-    def delete_one(self, telephone_number: str):
+    def delete_one(self, t_num: str):
         # обновляем указанную запись из таблицы
-        self.__cursor.execute('DELETE FROM users WHERE telephone_number=:telephone_number',
-                              {'telephone_number': telephone_number})
+        self.__cursor.execute('DELETE FROM users WHERE t_num=:t_num',
+                              {'t_num': t_num})
         self.__connection.commit()

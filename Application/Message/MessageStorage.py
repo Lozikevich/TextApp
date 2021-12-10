@@ -1,6 +1,6 @@
-from Message.message import *
 from typing import Iterable
 from abc import abstractmethod
+from Application.Message.message import *
 
 
 class AbstractMessageStorage(object):
