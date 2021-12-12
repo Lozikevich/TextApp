@@ -46,7 +46,9 @@ class DatabaseMessageStorage(AbstractMessageStorage):
         self.__connection.commit()
 
     def max_time(self):
-        time_list = []
+        max_time = datetime.strptime('2021-12-04 17:28:51.100000', "%Y-%m-%d %H:%M:%S.%f")
         for message in self.get_all():
-            time_list.append(datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f"))
-        return str(max(time_list))
+            if datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f") > max_time:
+                max_time = datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f")
+        return max_time
+

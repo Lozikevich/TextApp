@@ -28,39 +28,59 @@ class MainWindow(QWidget):
         self.__listWidget = QListWidget(self)
         self.__listWidget.setToolTip('List of users')
         self.__listWidget.setGeometry(QRect(540, 30, 161, 371))
+        self.get_users_button = QPushButton('Get users list', self)
+        self.get_users_button.setToolTip('Push enter for send your message')
+        self.get_users_button.setGeometry(QRect(540, 510, 161, 71))
         self.__model = None
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.get_messages)
-        self.timer.start(3000)
-
+        # self.timer.timeout.connect(self.get_users)
+        self.timer.start(5000)
         self.enter_button.clicked.connect(self.send_message)
-        # self.__listWidget.currentItemChanged.connect(self.item_clicked)
+        self.__LineEdit2.textChanged[str].connect(self.clear_and_write())
+        # self.get_users_button.clicked.connect(self.get_users)
 
     def get_messages(self):
         __main_message_storage = DatabaseMessageStorage(Path(
-            '/Client/Message/MessageStorage.db'
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Client/Message/MessageStorage.db'
         ))
         __manager = MessageManager(__main_message_storage)
-        max_time = __manager.max_time()
+        m_time = datetime.strptime('2021-12-04 17:28:51.100000', "%Y-%m-%d %H:%M:%S.%f")
+        for message in __manager.get_all_messages():
+            if datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f") > m_time:
+                m_time = datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f")
+        max_time = m_time
         t_num_1 = self.__LineEdit1.text()
         t_num_2 = self.__LineEdit2.text()
-        try:
-            response = requests.get('http://127.0.0.1:5000/messages',
-                                    params={'max_time': max_time, 't_num_1': t_num_1, 't_num_2': t_num_2})
-        except:
-            return
+        response = requests.get('http://127.0.0.1:5000/messages',
+                                params={'max_time': str(max_time), 't_num_1': str(t_num_1), 't_num_2': str(t_num_2)})
+        for message in response.json():
+            __manager.add_new_message(Message(message['mg_time'], message['t_num'], message['to_t_num'],
+                                              message['txt']))
+            self.print_messages(message)
 
-        for message in response:
-            print(message)
-            # self.print_messages(message)
+    def get_users(self):
+        response = requests.get('http://127.0.0.1:5000/users')
+        i = 0
+        for user in response.json():
+            i = i + 1
+            a = str(user['login'])
+            self.__listWidget.addItem(a)
 
-    # def get_users(self):
-    #     return requests.get('http://127.0.0.1:5000/users')
+    def clear_and_write(self):
+        self.textBrowser.setText('')
 
-    # def print_messages(self, message):
-    #     self.textBrowser.append(message['mg_time'])
-    #     self.textBrowser.append(message['t_num'])
-    #     self.textBrowser.append(message['txt'])
+
+    # def item_clicked(self):
+    #     print(self.__listWidget.currentRow())
+    #     return self.__listWidget.currentRow()
+
+    def print_messages(self, message):
+        self.textBrowser.append(str(message['mg_time']))
+        self.textBrowser.append(message['t_num'])
+        self.textBrowser.append(message['txt'])
+
+
 
     def send_message(self):
         mg_time = str(datetime.now())
