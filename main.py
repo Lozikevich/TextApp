@@ -1,5 +1,6 @@
-import requests
-import json
+from datetime import datetime
+from Application.Message.MessageManager import *
+from Application.Message.SQLMessageStorage import *
 
 if __name__ == '__main__':
     # main_user_storage = DatabaseUserStorage(Path('Application/UserStorage.db'))
@@ -12,13 +13,19 @@ if __name__ == '__main__':
     # # manager.add_new_user(User('5', 'Ivan_5', '123', 'Ivan_5@gmail.com'))
     # print([user for user in manager.get_all_users])
 
-    # response = requests.get('http://127.0.0.1:5000/friends', params={'t_num': '6'})
-    # print(response.json())
-    new_user = {'t_num': '6', 'login': 'Ivan_6', 'password': '123', 'email': 'Ivan_6@gmail.com'}
-    response = requests.post('http://127.0.0.1:5000/add_user', json=new_user)
-    response_1 = requests.get('http://127.0.0.1:5000/users')
-    for user in response_1:
-        print(user)
+    # # response = requests.get('http://127.0.0.1:5000/friends', params={'t_num': '6'})
+    # # print(response.json())
+    # new_user = {'t_num': '7', 'login': 'Ivan_7', 'password': '123', 'email': 'Ivan_7@gmail.com'}
+    # response = requests.post('http://127.0.0.1:5000/add_user', json=new_user)
+    # response_1 = requests.get('http://127.0.0.1:5000/users')
+    # for user in response_1:
+    #     print(user)
+
+    # new_message = {'mg_time': 'datetime.now()', 't_num': 't_num', 'to_t_num': 'str(to_t_num)', 'txt': 'txt'}
+    # response = requests.post('http://127.0.0.1:5000/add_message', json=new_message)
+    # response_1 = requests.get('http://127.0.0.1:5000/messages')
+    # for message in response_1:
+    #     print(message)
 
     # main_user_storage = DatabaseMessagetorage(Path('storage.db'))
     # manager = UserManager(main_user_storage)
@@ -52,14 +59,48 @@ if __name__ == '__main__':
     # # print(manager.get_all_users)
     # # print(manager.user_id_creator())
     # # print(manager.user_id_creator())
-    # main_message_storage = DatabaseMessageStorage(Path('MessageStorage.db'))
-    # manager = MessageManager(main_message_storage)
-    #
-    # manager.add_new_message(Message(datetime.now(), 'I_0', '0'))
-    # print(manager.get_all_messages())
-    # manager.add_new_message(Message(str(datetime.now()), 'I_1', '1', '1'))
-    # print(manager.get_all_messages())
-    # manager.add_new_message(Message(datetime.now(), 'I_2', '2'))
-    # print(manager.get_all_messages())
-    # # print(manager.get_one_message('2021-12-04 17:28:51.828210'))
+    main_message_storage = DatabaseMessageStorage(Path('C:/Users/ADMIN/PycharmProjects/TextApp/Application/Message/MessageStorage.db'))
+    manager = MessageManager(main_message_storage)
+
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '1', '2', '123'))
+    print(manager.get_all_messages())
+    manager.add_new_message(Message(str(datetime.now()), '2', '1', '123'))
+    print(manager.get_all_messages())
+    # print(manager.get_one_message('2021-12-04 17:28:51.828210'))
     # # print(datetime.strptime('2021-12-04 17:28:51.100000', "%Y-%m-%d %H:%M:%S.%f"))

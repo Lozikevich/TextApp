@@ -10,7 +10,7 @@ class AbstractFileMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def get_one(self, mg_time: datetime) -> Message | None:
+    def get_one(self, mg_time: str) -> Message | None:
         raise NotImplemented
 
     @abstractmethod
@@ -18,7 +18,7 @@ class AbstractFileMessageStorage(object):
         raise NotImplemented
 
     @abstractmethod
-    def delete_one(self, mg_time: datetime):
+    def delete_one(self, mg_time: str):
         raise NotImplemented
 
     @abstractmethod
@@ -65,7 +65,7 @@ class FileMessageStorage(AbstractFileMessageStorage):
         self._path.write_text('\n'.join(lines))
 
 #   Считывает строки из файла и перезаписывает в файл, если message.time не равен искомому
-    def delete_one(self, mg_time: datetime):
+    def delete_one(self, mg_time: str):
         lines = [self._make_line(message) for message in self.get_all() if message.mg_time != mg_time]
         self._path.write_text('\n'.join(lines))
 

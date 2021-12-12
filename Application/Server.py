@@ -1,4 +1,5 @@
-from flask import Flask, jsonify, request
+from datetime import datetime
+from flask import Flask, jsonify, request, json
 from Application.User.UserManager import *
 from Application.User.SQLUserStorage import *
 from Application.Message.MessageManager import *
@@ -15,7 +16,7 @@ if __name__ == '__main__':
     @app.route("/users")
     def _get_users():
         __main_user_storage = DatabaseUserStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/UserStorage.db'))
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'))
         __manager = UserManager(__main_user_storage)
         __response = [user for user in __manager.get_all_users]
         return jsonify(__response)
@@ -24,7 +25,7 @@ if __name__ == '__main__':
     def _user_friends():
         t_num = request.args.get('t_num')
         __main_user_storage = DatabaseUserStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/UserStorage.db'
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'
         ))
         __manager = UserManager(__main_user_storage)
         if __manager.check_t_num_registration(t_num):
@@ -36,40 +37,47 @@ if __name__ == '__main__':
     def _delete_user():
         t_num = request.args.get('t_num')
         __main_user_storage = DatabaseUserStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/UserStorage.db'
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'
         ))
         __manager = UserManager(__main_user_storage)
         __manager.delete_user(t_num)
 
-    @app.route("/add_user")
+    @app.route("/add_user", methods=['POST'])
     def _add_user():
-        data = request.json
+        d = request.json
+        print(d.get('t_num'))
         __main_user_storage = DatabaseUserStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/UserStorage.db'
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'
         ))
         __manager = UserManager(__main_user_storage)
-        __manager.add_new_user(User(data['t_num'], data['login'], data['password'], data['email']))
+        __manager.add_new_user(User(d.get('t_num'), d.get('login'), d.get('password'), d.get('email')))
+        return {'Ok': True}
 
     @app.route("/messages")
     def _get_messages():
-        login_1 = request.args.get('login_1')
-        login_2 = request.args.get('login_2')
+        max_time = request.args.get('max_time')
+        t_num_1 = request.args.get('t_num_1')
+        t_num_2 = request.args.get('t_num_2')
         __main_message_storage = DatabaseMessageStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/MessageStorage.db'))
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/Message/MessageStorage.db'))
         __manager = MessageManager(__main_message_storage)
         messages = []
-        for message in __manager.get_all_messages:
-            if (message.login == login_1 and message.to_login == login_2) or (message.login == login_2 and message.to_login == login_1):
+        for message in __manager.get_all_messages():
+            if (datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f") >
+                datetime.strptime(max_time, "%Y-%m-%d %H:%M:%S.%f")) and \
+                    (message.t_num == t_num_1 and message.to_t_num == t_num_2) or \
+                    (message.t_num == t_num_2 and message.to_t_num == t_num_1):
                 messages.append(message)
         return jsonify(messages)
 
-    @app.route("/add_message")
+    @app.route("/add_message", methods=['POST'])
     def _add_message():
-        data = request.json
+        __data = request.json
         __main_message_storage = DatabaseMessageStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/MessageStorage.db'
+            'C:/Users/ADMIN/PycharmProjects/TextApp/Application/Message/MessageStorage.db'
         ))
         __manager = MessageManager(__main_message_storage)
-        __manager.add_new_message(Message(data['mg_time'], data['login'], data['to_login'], data['txt']))
+        __manager.add_new_message(Message(__data['mg_time'], __data['t_num'], __data['to_t_num'], __data['txt']))
+        return {'Ok': True}
 
     app.run()

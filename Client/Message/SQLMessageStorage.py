@@ -1,9 +1,8 @@
 import sqlite3
+from datetime import datetime
 from typing import Iterable, Tuple
 from pathlib import Path
-from Application.Message.message import *
-from abc import abstractmethod
-from Application.Message.MessageStorage import *
+from Client.Message.MessageStorage import *
 
 
 class DatabaseMessageStorage(AbstractMessageStorage):
@@ -45,3 +44,9 @@ class DatabaseMessageStorage(AbstractMessageStorage):
         # обновляем указанную запись из таблицы
         self.__cursor.execute('DELETE FROM messages WHERE mg_time=:mg_time', {'mg_time': mg_time})
         self.__connection.commit()
+
+    def max_time(self):
+        time_list = []
+        for message in self.get_all():
+            time_list.append(datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f"))
+        return str(max(time_list))

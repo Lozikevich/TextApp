@@ -52,16 +52,16 @@ from typing import Dict, Any
 @dataclass
 class Message:
     mg_time: str
-    login: str
-    to_login: str
+    t_num: str
+    to_t_num: str
     txt: str
 
     @property
     def to_json(self) -> Dict[str, Any]:
         return {
             'mg_time': self.mg_time,
-            'login': self.login,
-            'to_login': self.to_login,
+            't_num': self.t_num,
+            'to_t_num': self.to_t_num,
             'txt': self.txt,
 
         }
