@@ -31,6 +31,8 @@ class MainWindow(QWidget):
         # self.__model = None
         self.label = QLabel('Insert your telephone number (0, .., 5)', self)
         self.label.setGeometry(QRect(20, 490, 231, 16))
+        self.label = QLabel('Insert your password (123)', self)
+        self.label.setGeometry(QRect(20, 540, 181, 16))
         self.autorization_button = QPushButton('Autorization', self)
         self.autorization_button.setToolTip('Push enter for autorization')
         self.autorization_button.setGeometry(QRect(20, 613, 181, 31))
@@ -53,6 +55,7 @@ class MainWindow(QWidget):
             self.label.setText('Вы авторизированы')
             global t_num_1
             t_num_1 = self.__LineEdit1.text()
+            self.label.setText('')
         if response.json()['answer'] == '0':
             return self.label.setText('Введен некорректный password или t_num')
 
