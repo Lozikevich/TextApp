@@ -16,3 +16,7 @@ class UserManager:
     # Добавление нового пользователя
     def add_new_user(self, user: User):
         return self.__user_storage.put_one(user)
+
+    @property
+    def get_all_users(self) -> Iterable[User]:
+        return self.__user_storage.get_all()
