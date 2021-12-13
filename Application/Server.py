@@ -4,6 +4,7 @@ from Application.User.UserManager import *
 from Application.User.SQLUserStorage import *
 from Application.Message.MessageManager import *
 from Application.Message.SQLMessageStorage import *
+from Application.Config import *
 
 
 app = Flask(__name__)
@@ -87,5 +88,5 @@ def _add_message():
 
 
 if __name__ == '__main__':
-    settings = {'host': "localhost", 'port': 8080}
-    app.run(settings['host'], settings['port'], debug=True)
+    # settings = {'host': "localhost", 'port': 8080}
+    app.run(for_server['host'], for_server['port'], debug=True)

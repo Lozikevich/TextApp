@@ -4,6 +4,7 @@ from PyQt6.QtCore import QRect
 from PyQt6.QtWidgets import QTextEdit, QPushButton, QTextBrowser, QLineEdit, QListWidget, QWidget, QLabel
 from Client.Message.MessageManager import *
 from Client.User.UserManager import *
+from Client.Window.Config import *
 
 
 class MainWindow(QWidget):
@@ -49,7 +50,7 @@ class MainWindow(QWidget):
     def autorization(self):
         __t_num = self.__LineEdit1.text()
         password = self.__LineEdit2.text()
-        response = requests.get('http://localhost:8080/user_registered', params={'t_num': str(__t_num),
+        response = requests.get(f'http://{host}:{port}/user_registered', params={'t_num': str(__t_num),
                                                                                  'password': str(password)})
         if response.json()['answer'] == '1':
             self.label.setText('Вы авторизированы')
@@ -65,7 +66,7 @@ class MainWindow(QWidget):
         self.textBrowser.setText('')
         # t_num_1 = self.__LineEdit1.text()
         number = self.__listWidget.currentRow()
-        response = requests.get('http://localhost:8080/users')
+        response = requests.get(f'http://{host}:{port}/users')
         t_num_2 = str(response.json()[number]['t_num'])
         __main_message_storage = DatabaseMessageStorage(Path(tmp_message_storage))
         __manager = MessageManager(__main_message_storage)
@@ -94,7 +95,7 @@ class MainWindow(QWidget):
             i = i + 1
             if i == number:
                 t_num_2 = str(user.t_num)
-        response = requests.get('http://localhost:8080/messages',
+        response = requests.get(f'http://{host}:{port}/messages',
                                 params={'max_time': str(max_time), 't_num_1': str(t_num_1), 't_num_2': str(t_num_2)})
         for message in response.json():
             __message_manager.add_new_message(Message(message['mg_time'], message['t_num'], message['to_t_num'],
@@ -102,7 +103,7 @@ class MainWindow(QWidget):
             self.print_messages_from_server(message)
 
     def get_users(self):
-        response = requests.get('http://localhost:8080/users')
+        response = requests.get(f'http://{host}:{port}/users')
         tmp_user_storage = Path(__file__).parent.joinpath('UserStorage.db')
         __main_user_storage = DatabaseUserStorage(Path(tmp_user_storage))
         __user_manager = UserManager(__main_user_storage)
@@ -147,5 +148,5 @@ class MainWindow(QWidget):
         self.print_messages_from_server(new_message)
         __message_manager.add_new_message(Message(new_message['mg_time'], new_message['t_num'], new_message['to_t_num'],
                                                   new_message['txt']))
-        requests.post('http://localhost:8080/add_message', json=new_message)
+        requests.post(f'http://{host}:{port}/add_message', json=new_message)
         self.__textEdit.setText('')
