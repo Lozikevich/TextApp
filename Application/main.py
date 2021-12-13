@@ -1,15 +1,25 @@
+import requests
+
 import Application
 from Application.User.UserManager import *
 from Application.User.SQLUserStorage import *
 
 
 if __name__ == '__main__':
-    tmp_user_storage = Path(__file__).parent.joinpath('UserStorage.db')
-    __main_user_storage = DatabaseUserStorage(Path(tmp_user_storage))
-    __manager = UserManager(__main_user_storage)
-    __manager.add_new_user(User('0', 'user_0', '123', 'user_0@mail.ru'))
-    __manager.add_new_user(User('1', 'user_1', '123', 'user_1@mail.ru'))
-    __manager.add_new_user(User('2', 'user_2', '123', 'user_2@mail.ru'))
-    __manager.add_new_user(User('3', 'user_3', '123', 'user_3@mail.ru'))
-    __manager.add_new_user(User('4', 'user_4', '123', 'user_4@mail.ru'))
-    __manager.add_new_user(User('5', 'user_5', '123', 'user_5@mail.ru'))
+#     tmp_user_storage = Path(__file__).parent.joinpath('UserStorage.db')
+#     __main_user_storage = DatabaseUserStorage(Path(tmp_user_storage))
+#     __manager = UserManager(__main_user_storage)
+#     __manager.add_new_user(User('0', 'user_0', '123', 'user_0@mail.ru'))
+#     __manager.add_new_user(User('1', 'user_1', '123', 'user_1@mail.ru'))
+#     __manager.add_new_user(User('2', 'user_2', '123', 'user_2@mail.ru'))
+#     __manager.add_new_user(User('3', 'user_3', '123', 'user_3@mail.ru'))
+#     __manager.add_new_user(User('4', 'user_4', '123', 'user_4@mail.ru'))
+#     __manager.add_new_user(User('5', 'user_5', '123', 'user_5@mail.ru'))
+
+    t_num_1 = '2'
+    password = '123'
+    response = requests.get('http://localhost:8080/user_registered', params={'t_num': t_num_1, 'password': password})
+    if response.json()['answer'] == '1':
+        print(response.json()['answer'])
+    if response.json()['answer'] == '0':
+        print(response.json()['answer'])

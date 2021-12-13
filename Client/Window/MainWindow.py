@@ -28,26 +28,39 @@ class MainWindow(QWidget):
         self.get_users_button = QPushButton('Get users list', self)
         self.get_users_button.setToolTip('Push enter for send your message')
         self.get_users_button.setGeometry(QRect(540, 510, 161, 71))
-        self.__model = None
+        # self.__model = None
         self.label = QLabel('Insert your telephone number (0, .., 5)', self)
         self.label.setGeometry(QRect(20, 490, 231, 16))
-        self.label1 = QLabel('For start working try main.py', self)
-        self.label1.setGeometry(QRect(210, 510, 271, 16))
-        self.label2 = QLabel('After it press button: Get user list', self)
-        self.label2.setGeometry(QRect(210, 530, 271, 16))
-
-
+        self.autorization_button = QPushButton('Autorization', self)
+        self.autorization_button.setToolTip('Push enter for autorization')
+        self.autorization_button.setGeometry(QRect(20, 613, 181, 31))
+        self.__LineEdit2 = QLineEdit(self)
+        self.__LineEdit2.setToolTip('Set your password')
+        self.__LineEdit2.setGeometry(QRect(20, 560, 181, 31))
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.get_messages)
         self.__listWidget.itemDoubleClicked.connect(self.change_user)
         self.enter_button.clicked.connect(self.send_message)
         self.get_users_button.clicked.connect(self.get_users)
+        self.autorization_button.clicked.connect(self.autorization)
+
+    def autorization(self):
+        global t_num_1
+        t_num_1 = self.__LineEdit1.text()
+        password = self.__LineEdit2.text()
+        response = requests.get('http://localhost:8080/user_registered', params={'t_num': str(t_num_1),
+                                                                                 'password': str(password)})
+        if response.json()['answer'] == '1':
+            self.label.setText('Вы авторизированы')
+            return
+        if response.json()['answer'] == '0':
+            return self.label.setText('Введен некорректный password или t_num')
 
     def change_user(self):
         tmp_message_storage = Path(__file__).parent.joinpath('MessageStorage.db')
         self.timer.stop()
         self.textBrowser.setText('')
-        t_num_1 = self.__LineEdit1.text()
+        # t_num_1 = self.__LineEdit1.text()
         number = self.__listWidget.currentRow()
         response = requests.get('http://localhost:8080/users')
         t_num_2 = str(response.json()[number]['t_num'])
@@ -71,16 +84,13 @@ class MainWindow(QWidget):
             if datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f") > m_time:
                 m_time = datetime.strptime(message.mg_time, "%Y-%m-%d %H:%M:%S.%f")
         max_time = m_time
-        t_num_1 = self.__LineEdit1.text()
+        # t_num_1 = self.__LineEdit1.text()
         number = self.__listWidget.currentRow()
-        list_users = __user_manager.get_all_users
         i = -1
         for user in __user_manager.get_all_users:
             i = i + 1
             if i == number:
                 t_num_2 = str(user.t_num)
-        # response = requests.get('http://localhost:8080/users')
-        # t_num_2 = str(response.json()[number]['t_num'])
         response = requests.get('http://localhost:8080/messages',
                                 params={'max_time': str(max_time), 't_num_1': str(t_num_1), 't_num_2': str(t_num_2)})
         for message in response.json():
@@ -121,7 +131,8 @@ class MainWindow(QWidget):
         __main_user_storage = DatabaseUserStorage(Path(tmp_user_storage))
         __user_manager = UserManager(__main_user_storage)
         mg_time = str(datetime.now())
-        t_num = self.__LineEdit1.text()
+        # t_num = self.__LineEdit1.text()
+        t_num = t_num_1
         number = self.__listWidget.currentRow()
         i = -1
         for user in __user_manager.get_all_users:

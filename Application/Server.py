@@ -24,17 +24,15 @@ def _get_users():
     return jsonify(__response)
 
 
-# @app.route("/user_friends")
-# def _user_friends():
-#     t_num = request.args.get('t_num')
-#     __main_user_storage = DatabaseUserStorage(Path(
-#         '../TextApp/Application/User/UserStorage.db'
-#     ))
-#     __manager = UserManager(__main_user_storage)
-#     if __manager.check_t_num_registration(t_num):
-#         return jsonify({'t_num': '1'})
-#     else:
-#         return jsonify({'t_num': '0'})
+@app.route("/user_registered")
+def _user_registered():
+    tmp_user_storage = Path(__file__).parent.joinpath('UserStorage.db')
+    __main_user_storage = DatabaseUserStorage(Path(tmp_user_storage))
+    __manager = UserManager(__main_user_storage)
+    if request.args.get('password') == __manager.get_password(request.args.get('t_num')):
+        return jsonify({'answer': '1'})
+    else:
+        return jsonify({'answer': '0'})
 
 
 # @app.route("/delete_user")
