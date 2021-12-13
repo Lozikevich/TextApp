@@ -20,12 +20,8 @@ if __name__ == '__main__':
         __main_user_storage = DatabaseUserStorage(Path(
             'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'))
         __manager = UserManager(__main_user_storage)
-        users = []
-        for user in __manager.get_all_users:
-            __user = {'t_num': user.t_num, 'login': user.login}
-            users = users.append(__user)
-        return jsonify(users)
-
+        __response = [user for user in __manager.get_all_users]
+        return jsonify(__response)
 
     @app.route("/user_friends")
     def _user_friends():
@@ -53,7 +49,6 @@ if __name__ == '__main__':
     @app.route("/add_user", methods=['POST'])
     def _add_user():
         d = request.json
-        print(d.get('t_num'))
         __main_user_storage = DatabaseUserStorage(Path(
             'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'
         ))
@@ -89,6 +84,5 @@ if __name__ == '__main__':
         __manager = MessageManager(__main_message_storage)
         __manager.add_new_message(Message(__data['mg_time'], __data['t_num'], __data['to_t_num'], __data['txt']))
         return {'Ok': True}
-
 
     app.run()

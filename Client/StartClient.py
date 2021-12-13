@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QApplication
 
 from Client.Window.MainWindow import *
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 

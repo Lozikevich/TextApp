@@ -9,12 +9,13 @@ class User:
     password: str
     email: str
 
-    @property
-    def to_json(self) -> Dict[str, Any]:
-        return {
-            't_num': self.t_num,
-            'login': self.login,
-            'password': self.password,
-            'email': self.email,
 
-        }
+    # @property
+    # def to_json(self) -> Dict[str, Any]:
+    #     return {
+    #         't_num': self.t_num,
+    #         'login': self.login,
+    #         'password': self.password,
+    #         'email': self.email,
+    #
+    #     }

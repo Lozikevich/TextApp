@@ -1,5 +1,3 @@
-# выбрать storage: ReadWriteUserStorage, DatabaseUserStorage
-from Application.User.UserStorage import *
 from Application.User.SQLUserStorage import *
 from Application.User.user import *
 
@@ -11,6 +9,10 @@ class UserManager:
     @property
     def get_all_users(self) -> Iterable[User]:
         return self.__user_storage.get_all()
+
+    @property
+    def get_all_users_for_Client(self) -> Iterable[User]:
+        return self.__user_storage.get_all_for_Client()
 
     def get_one(self, t_num: str) -> User:
         return self.__user_storage.get_one(t_num)
@@ -106,24 +108,13 @@ class UserManager:
                 print('Пользователь с таким user_id не зарегистрирован в системе')
                 return False
 
-    # Удаление пользователя по telephone_number
+    # Удаление пользователя по t_num
     def delete_user(self, t_num):
         if not self.check_user_id(t_num):
-            print('Пользователь с таким user_id не найден')
+            print('Пользователь с таким t_num не найден')
         else:
             return self.__user_storage.delete_one(t_num)
 
-    # Задание пользовател в диалоговом окне
-    # def user_creator(self) -> User:
-    #     print("Введите Ваш номер телефона, логин, пароль, электронную почту в строку через ' ;; ': ")
-    #     a = input()
-    #     user = []
-    #     for i in a:
-    #         values = a.split(' ;; ')
-    #         user = User(values[0], values[1], values[2], values[3])
-    #     return user
-
     # Добавление нового пользователя
     def add_new_user(self, user: User):
-        # if not (self.check_login_registration(user.login) or self.check_email_registration(user.email)):
         return self.__user_storage.put_one(user)

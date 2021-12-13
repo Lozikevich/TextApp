@@ -1,11 +1,7 @@
 from PyQt6 import QtCore
-# from PySide6.QtCore import QRect
-# from PySide6.QtWidgets import (
-#     QWidget, QPushButton, QTextEdit, QTextBrowser, QListWidget, QLineEdit, )
 import requests
 from PyQt6.QtCore import QRect
 from PyQt6.QtWidgets import QTextEdit, QPushButton, QTextBrowser, QLineEdit, QListWidget, QWidget
-
 from Client.Message.MessageManager import *
 
 
@@ -35,11 +31,8 @@ class MainWindow(QWidget):
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.get_messages)
         self.__listWidget.itemDoubleClicked.connect(self.change_user)
-        # self.timer.start(5000)
         self.enter_button.clicked.connect(self.send_message)
         self.get_users_button.clicked.connect(self.get_users)
-
-        # self.get_users_button.clicked.connect(self.get_users)
 
     def change_user(self):
         self.timer.stop()
@@ -86,7 +79,6 @@ class MainWindow(QWidget):
 
     def print_messages_from_server(self, message):
         self.textBrowser.append(str(message['mg_time']))
-
         self.textBrowser.append(message['t_num'])
         self.textBrowser.append(message['txt'])
 
