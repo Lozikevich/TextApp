@@ -45,14 +45,14 @@ class MainWindow(QWidget):
         self.autorization_button.clicked.connect(self.autorization)
 
     def autorization(self):
-        global t_num_1
-        t_num_1 = self.__LineEdit1.text()
+        __t_num = self.__LineEdit1.text()
         password = self.__LineEdit2.text()
-        response = requests.get('http://localhost:8080/user_registered', params={'t_num': str(t_num_1),
+        response = requests.get('http://localhost:8080/user_registered', params={'t_num': str(__t_num),
                                                                                  'password': str(password)})
         if response.json()['answer'] == '1':
             self.label.setText('Вы авторизированы')
-            return
+            global t_num_1
+            t_num_1 = self.__LineEdit1.text()
         if response.json()['answer'] == '0':
             return self.label.setText('Введен некорректный password или t_num')
 
