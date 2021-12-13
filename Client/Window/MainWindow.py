@@ -40,27 +40,27 @@ class MainWindow(QWidget):
         self.enter_button.clicked.connect(self.send_message)
         self.get_users_button.clicked.connect(self.get_users)
 
+
+
     def change_user(self):
+        tmp_message_storage = Path(__file__).parent.joinpath('MessageStorage.db')
         self.timer.stop()
         self.textBrowser.setText('')
         t_num_1 = self.__LineEdit1.text()
         number = self.__listWidget.currentRow()
-        response = requests.get('http://127.0.0.1:5000/users')
+        response = requests.get('http://localhost:8080/users')
         t_num_2 = str(response.json()[number]['t_num'])
-        __main_message_storage = DatabaseMessageStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Client/Message/MessageStorage.db'
-        ))
+        __main_message_storage = DatabaseMessageStorage(Path(tmp_message_storage))
         __manager = MessageManager(__main_message_storage)
         for message in __manager.get_all_messages():
             if (message.t_num == t_num_1 and message.to_t_num == t_num_2) or \
                         (message.t_num == t_num_2 and message.to_t_num == t_num_1):
                 self.print_messages_from_db(message)
-        return self.timer.start(3000)
+        return self.timer.start(5000)
 
     def get_messages(self):
-        __main_message_storage = DatabaseMessageStorage(Path(
-            'C:/Users/ADMIN/PycharmProjects/TextApp/Client/Message/MessageStorage.db'
-        ))
+        tmp_message_storage = Path(__file__).parent.joinpath('MessageStorage.db')
+        __main_message_storage = DatabaseMessageStorage(Path(tmp_message_storage))
         __manager = MessageManager(__main_message_storage)
         m_time = datetime.strptime('2021-12-04 17:28:51.100000', "%Y-%m-%d %H:%M:%S.%f")
         for message in __manager.get_all_messages():
@@ -69,9 +69,9 @@ class MainWindow(QWidget):
         max_time = m_time
         t_num_1 = self.__LineEdit1.text()
         number = self.__listWidget.currentRow()
-        response = requests.get('http://127.0.0.1:5000/users')
+        response = requests.get('http://localhost:8080/users')
         t_num_2 = str(response.json()[number]['t_num'])
-        response = requests.get('http://127.0.0.1:5000/messages',
+        response = requests.get('http://localhost:8080/messages',
                                 params={'max_time': str(max_time), 't_num_1': str(t_num_1), 't_num_2': str(t_num_2)})
         for message in response.json():
             __manager.add_new_message(Message(message['mg_time'], message['t_num'], message['to_t_num'],
@@ -79,7 +79,7 @@ class MainWindow(QWidget):
             self.print_messages_from_server(message)
 
     def get_users(self):
-        response = requests.get('http://127.0.0.1:5000/users')
+        response = requests.get('http://localhost:8080/users')
         for user in response.json():
             self.__listWidget.addItem(str(user['login']))
 
@@ -97,12 +97,12 @@ class MainWindow(QWidget):
         mg_time = str(datetime.now())
         t_num = self.__LineEdit1.text()
         number = self.__listWidget.currentRow()
-        response = requests.get('http://127.0.0.1:5000/users')
+        response = requests.get('http://localhost:8080/users')
         to_t_num = str(response.json()[number]['t_num'])
         txt = self.__textEdit.toPlainText()
         new_message = {'mg_time': mg_time, 't_num': t_num, 'to_t_num': to_t_num, 'txt': txt}
         try:
-            response = requests.post('http://127.0.0.1:5000/add_message', json=new_message)
+            response = requests.post('http://localhost:8080/add_message', json=new_message)
         except:
             # TODO server недоступен
 
