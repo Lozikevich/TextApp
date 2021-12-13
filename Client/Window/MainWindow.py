@@ -41,7 +41,6 @@ class MainWindow(QWidget):
         self.get_users_button.clicked.connect(self.get_users)
 
 
-
     def change_user(self):
         tmp_message_storage = Path(__file__).parent.joinpath('MessageStorage.db')
         self.timer.stop()
