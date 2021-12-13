@@ -55,7 +55,7 @@ class MainWindow(QWidget):
             if (message.t_num == t_num_1 and message.to_t_num == t_num_2) or \
                         (message.t_num == t_num_2 and message.to_t_num == t_num_1):
                 self.print_messages_from_db(message)
-        return self.timer.start(5000)
+        return self.timer.start(10000)
 
     def get_messages(self):
         tmp_message_storage = Path(__file__).parent.joinpath('MessageStorage.db')
