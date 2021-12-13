@@ -4,7 +4,7 @@ from Application.User.SQLUserStorage import *
 
 if __name__ == '__main__':
     __main_user_storage = DatabaseUserStorage(Path(
-        'C:/Users/ADMIN/PycharmProjects/TextApp/Application/User/UserStorage.db'))
+        '~/TextApp/Application/User/UserStorage.db'))
     __manager = UserManager(__main_user_storage)
     __manager.add_new_user(User('0', 'user_0', '123', 'user_0@mail.ru'))
     __manager.add_new_user(User('1', 'user_1', '123', 'user_1@mail.ru'))

@@ -1,7 +1,7 @@
 from PyQt6 import QtCore
 import requests
 from PyQt6.QtCore import QRect
-from PyQt6.QtWidgets import QTextEdit, QPushButton, QTextBrowser, QLineEdit, QListWidget, QWidget
+from PyQt6.QtWidgets import QTextEdit, QPushButton, QTextBrowser, QLineEdit, QListWidget, QWidget, QLabel
 from Client.Message.MessageManager import *
 
 
@@ -28,6 +28,12 @@ class MainWindow(QWidget):
         self.get_users_button.setToolTip('Push enter for send your message')
         self.get_users_button.setGeometry(QRect(540, 510, 161, 71))
         self.__model = None
+        self.label = QLabel('Insert your telephone number (0, .., 5)', self)
+        self.label.setGeometry(QRect(20, 490, 231, 16))
+        self.label1 = QLabel('For start working try main.py', self)
+        self.label1.setGeometry(QRect(210, 510, 271, 16))
+        self.label2 = QLabel('After it press button: Get user list', self)
+        self.label2.setGeometry(QRect(210, 530, 271, 16))
         self.timer = QtCore.QTimer()
         self.timer.timeout.connect(self.get_messages)
         self.__listWidget.itemDoubleClicked.connect(self.change_user)
