@@ -20,7 +20,7 @@ def _get_users():
     __main_user_storage = DatabaseUserStorage(Path(
         tmp_user_storage))
     __manager = UserManager(__main_user_storage)
-    __response = [user for user in __manager.get_all_users]
+    __response = [{'t_num': user.t_num, 'login': user.login} for user in __manager.get_all_users]
     return jsonify(__response)
 
 

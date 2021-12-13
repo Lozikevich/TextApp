@@ -13,4 +13,3 @@ if __name__ == '__main__':
     __manager.add_new_user(User('3', 'user_3', '123', 'user_3@mail.ru'))
     __manager.add_new_user(User('4', 'user_4', '123', 'user_4@mail.ru'))
     __manager.add_new_user(User('5', 'user_5', '123', 'user_5@mail.ru'))
-

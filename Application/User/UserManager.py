@@ -10,10 +10,6 @@ class UserManager:
     def get_all_users(self) -> Iterable[User]:
         return self.__user_storage.get_all()
 
-    @property
-    def get_all_users_for_Client(self) -> Iterable[User]:
-        return self.__user_storage.get_all_for_Client()
-
     def get_one(self, t_num: str) -> User:
         return self.__user_storage.get_one(t_num)
 
